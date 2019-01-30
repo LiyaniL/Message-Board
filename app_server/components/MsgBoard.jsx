@@ -1,5 +1,5 @@
 const React = require('react');
-const MsgList = require('./MsgList');
+const MsgList = require('./MsgList.jsx');
 const NewMsg = require('./NewMsg.jsx');
 
 class MsgBoard extends React.Component{

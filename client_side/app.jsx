@@ -7,4 +7,4 @@ const MsgBoard = require('../app_server/components/MsgBoard.jsx');
 
 ReactDOM.hydrate(<Header/>, document.getElementById('header'));
 ReactDOM.hydrate(<Footer/>, document.getElementById('footer'));
-ReactDOM.hydrate(<MsgBoard messages={messages}/>, document.getElementById('msg-baord'));
+ReactDOM.hydrate(<MsgBoard messages={messages}/>, document.getElementById('msg-board'));
