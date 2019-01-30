@@ -3,6 +3,9 @@
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 require("@babel/register") ({
     presets: [ '@babel/preset-react' ]
 });
@@ -11,17 +14,24 @@ const Header = React.createFactory(require('../components/Header.jsx'));
 const Footer = React.createFactory(require('../components/Footer.jsx'));
 const MsgBoard = React.createFactory(require('../components/MsgBoard.jsx'));
 
-const msgs = [
-    { id: 1, name: 'Bill', msg: 'Hi All!' },
-    { id: 2, name: 'Ann', msg: 'ICS 221 is fun!' },
-    { id: 3, name: 'John', msg: 'Howdy!' },
-    { id: 4, name: 'Barb', msg: 'Hi'},
-    { id: 5, name: 'Frank', msg: 'Who\'s tired?'},
-    { id: 6, name: 'Sarah', msg: 'I heart React' }
-];
+// const msgs = [
+//     { id: 1, name: 'Bill', msg: 'Hi All!' },
+//     { id: 2, name: 'Ann', msg: 'ICS 221 is fun!' },
+//     { id: 3, name: 'John', msg: 'Howdy!' },
+//     { id: 4, name: 'Barb', msg: 'Hi'},
+//     { id: 5, name: 'Frank', msg: 'Who\'s tired?'},
+//     { id: 6, name: 'Sarah', msg: 'I heart React' }
+// ];
+
+function handleHTTPErrors(response) {
+    if(!response.ok) throw Error(response.status + 
+    ': ' + response.statusText);
+    return response;
+}
+
 
 // index handler
-const index = (req, res) => {
+const renderIndex = (req, res, msgs) => {
     res.render('index', {
         title: 'ICS 221 Universal JS Msg Board',
         header: ReactDOMServer.renderToString(Header()),
@@ -33,4 +43,23 @@ const index = (req, res) => {
     });
 };
 
-module.exports = { index };
+const getMessages = (req, res) => {
+    fetch('http://localhost:3003/msgs')
+    .then(response=> handleHTTPErrors(response))
+    .then(result=> result.json())
+    .then(result=> {
+        if (!(result instanceof Array)) {
+            console.error('API lookup error');
+            result = [];
+        }
+        else {
+            renderIndex(req, res, result);
+        }
+    })
+    .catch(error=> {
+        console.log(error);
+    })
+}
+
+
+module.exports = { getMessages };

@@ -12,6 +12,12 @@ class MsgBoard extends React.Component{
             };
     }
 
+    handleHTTPErrors(response) {
+        if(!response.ok) throw Error(response.status + 
+        ': ' + response.statusText);
+        return response;
+    }
+
     addMessage(message) {
         let msgs = this.state.messages;
 
@@ -59,7 +65,7 @@ class MsgBoard extends React.Component{
         
         return (
             <div>
-                <NewMsg addMsgCallback={this.addMessage}/>
+                <NewMsg addMessageCallback={this.addMessage}/>
                 <MsgList messages={this.state.messages}/>
             </div>
         );

@@ -29,6 +29,16 @@
       "id": 5,
       "name": "Sarah",
       "msg": "I heart React"
+    },
+    {
+      "name": "liyani",
+      "msg": "test message",
+      "id": 6
+    },
+    {
+      "name": "Forest",
+      "msg": "doesn't know why its not working",
+      "id": 7
     }
   ]
 }
