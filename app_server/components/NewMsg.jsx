@@ -62,8 +62,8 @@ class NewMsg extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-3">
-                        <input id="msg" type="text" className="form-control"
-                        placeholder="Your Message" value={this.state.msg}
+                        <input id="name" type="text" className="form-control"
+                        placeholder="Your Name" value={this.state.name}
                         onChange={this.handleText}
                     />
                     </div>
