@@ -4,6 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// mongodb connection via mongoose
+require('./api_server/db');
+
+
 const appRouter = require('./app_server/routes/app_router');
 
 var app = express();
