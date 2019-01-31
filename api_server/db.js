@@ -14,3 +14,5 @@ mongoose.connection.on('error', (err) => {
 mongoose.connection.on('disconnected', () => {
     console.log('Mongoose disconnected');
 });
+
+require('./models/message_schema');
