@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require('passport');
 
 // mongodb connection via mongoose
 require('./api_server/db');
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', appRouter);
 app.use('/api/v1', apiRouter);
+app.use(passport.initialize());
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
