@@ -33,7 +33,7 @@ class MsgBoard extends React.Component{
         });
 
         // update back-end data
-        fetch('http://localhost:3003/msgs', {
+        fetch(`${process.env.API_URL}/msgs`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ class MsgBoard extends React.Component{
     }
 
     componentDidMount() {
-        fetch('http://localhost:3003/msgs')
+        fetch(`${process.env.API_URL}/msgs`)
         .then(response=> this.handleHTTPErrors(response))
         .then(response=> response.json())
         .then(result=> {

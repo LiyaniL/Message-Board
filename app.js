@@ -7,7 +7,7 @@ var logger = require('morgan');
 // mongodb connection via mongoose
 require('./api_server/db');
 
-
+const apiRouter = require('./api_server/routes/api_router');
 const appRouter = require('./app_server/routes/app_router');
 
 var app = express();
@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', appRouter);
+app.use('/api/v1', apiRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

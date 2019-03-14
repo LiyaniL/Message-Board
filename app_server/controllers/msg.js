@@ -44,7 +44,7 @@ const renderIndex = (req, res, msgs) => {
 };
 
 const getMessages = (req, res) => {
-    fetch('http://localhost:3003/msgs')
+    fetch(`${process.env.API_URL}/msgs`)
     .then(response=> handleHTTPErrors(response))
     .then(result=> result.json())
     .then(result=> {
