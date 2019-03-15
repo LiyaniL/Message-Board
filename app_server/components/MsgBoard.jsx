@@ -1,13 +1,17 @@
 const React = require('react');
 const MsgList = require('./MsgList.jsx');
 const NewMsg = require('./NewMsg.jsx');
+const Login = require('./Login.jsx');
 
 class MsgBoard extends React.Component{
     constructor(props) {
         super(props);
         this.addMessage = this.addMessage.bind(this);
             this.state = {
-                messages: this.props.messages
+                messages: this.props.messages,
+                loginForm: true,
+                loginAttempts: 3,
+                loginFail: false
 
             };
     }
@@ -62,10 +66,21 @@ class MsgBoard extends React.Component{
 
 
     render() {
+        let form;
+
+        if (this.state.loginForm) {
+            form = <Login registerCallback={this.register}
+            loginCallback={this.login}
+            loginFail={this.state.loginFail}
+            loginAttempts={this.state.loginAttempts}/>
+        }
+        else {
+            form = <NewMsg addMessageCallback={this.addMessage}/>
+        }
         
         return (
             <div>
-                <NewMsg addMessageCallback={this.addMessage}/>
+                {form}
                 <MsgList messages={this.state.messages}/>
             </div>
         );
