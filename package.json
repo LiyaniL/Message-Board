@@ -1,6 +1,6 @@
 {
   "name": "ics221-mb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "nodemon -e js,jsx --exec \"node -r dotenv/config ./bin/www\"",
