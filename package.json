@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon -e js,jsx --exec \"node -r dotenv/config ./bin/www\"",
-    "build": "webpack --watch"
+    "build": "webpack"
   },
   "dependencies": {
+    "bad-words": "^3.0.2",
     "bcrpyt": "^2.0.0",
     "bcrypt": "^3.0.4",
     "cookie-parser": "~1.4.3",
