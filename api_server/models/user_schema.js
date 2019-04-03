@@ -40,5 +40,4 @@ userSchema.methods.verifyPassword = function(inputedPlainTextPassword) {
     const hashedPassword = this.password;
     return bcrypt.compare( inputedPlainTextPassword, hashedPassword );
 }
-
 module.exports = mongoose.model('user', userSchema);

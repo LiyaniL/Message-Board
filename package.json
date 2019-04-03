@@ -1,5 +1,5 @@
 {
-  "name": "ics221-mb",
+  "name": "llustado",
   "version": "0.0.2",
   "private": true,
   "scripts": {
@@ -18,10 +18,12 @@
     "http-errors": "~1.6.2",
     "isomorphic-fetch": "^2.2.1",
     "mongoose": "^5.4.8",
+    "mongoose-rbac": "^0.1.3",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
     "pug": "2.0.0-beta11",
+    "rbac": "^5.0.3",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "validator": "^10.11.0"

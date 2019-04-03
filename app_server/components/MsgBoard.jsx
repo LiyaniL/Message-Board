@@ -2,7 +2,7 @@ const React = require('react');
 const MsgList = require('./MsgList.jsx');
 const NewMsg = require('./NewMsg.jsx');
 const Login = require('./Login.jsx');
-const Registration = require("c:/school/Year 2/ICS 221 - Web Services/Lab 7/ics221-mb/client_side/Registration.jsx");
+const Registration = require("c:/school/Year 2/ICS 221 - Web Services/Final Project/llustado/client_side/Registration.jsx");
 
 class MsgBoard extends React.Component{
     constructor(props) {
