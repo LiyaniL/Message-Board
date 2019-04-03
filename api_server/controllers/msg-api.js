@@ -42,6 +42,39 @@ const getSingleMessage = (req, res) => {
   }
 };
 
+const deleteSingleMessage = (req, res) => {
+  if ((req.params && req.params.messageid)) {
+    messageModel.findById(req.params.messageid).exec((err, message) => {
+        // error in executing function
+        if (err) {
+          res.status(400).json(err);
+          return;
+        }
+
+        // could execute, but didn't find message
+        if (!message) {
+          res.status(404).json({
+            "api-msg": "messageid not found"
+          });
+          return;
+        }
+
+        //found message, now deleting
+        message.remove(err => {
+          // error executing function
+          if (err) {
+            return res.status(400).json(err);
+          }
+          res.status(200).json(message);
+        });
+      })
+  } else {
+    // must have a message id
+    res.status(400).json({
+      "api-msg": "No messageid in request"
+    });
+  }
+};
 // Post Request Handler
 const addNewMessage = (req, res) => {
   messageModel.create(req.body, (err, message) => {
@@ -56,5 +89,6 @@ const addNewMessage = (req, res) => {
 module.exports = {
   getAllMessagesOrderedByLastPosted,
   addNewMessage,
-  getSingleMessage
+  getSingleMessage,
+  deleteSingleMessage
 };
