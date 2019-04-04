@@ -21,6 +21,7 @@ router.get(
 );
 
 router.route("/msgs/:messageid").get(msgAPIController.getSingleMessage);
-router.route("/msgs/delete/:messageid").get(msgAPIController.deleteSingleMessage);
+router.route("/msgs/:messageid").delete(msgAPIController.deleteSingleMessage);
+router.route("/msgs/:messageid").put(msgAPIController.updateSingleMessage);
 
 module.exports = router;
