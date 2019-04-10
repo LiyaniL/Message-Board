@@ -22,7 +22,8 @@ class MsgBoard extends React.Component{
                 userCredentials: {
                     email: '',
                     password: ''
-                }
+                },
+                currentuser: ""
 
             };
     }
@@ -56,6 +57,7 @@ class MsgBoard extends React.Component{
                     loginForm: false,
                     loginFail: false
                 });
+                return response;
             }
             else {
                 // Credentials are wrong
@@ -66,6 +68,13 @@ class MsgBoard extends React.Component{
                     });
                 });
             }
+
+        })
+        .then(result=> result.json())
+        .then(result=> {
+            this.setState({
+                currentuser: result
+            })
         })
         .catch(error => {
             console.log(error);
@@ -106,7 +115,33 @@ class MsgBoard extends React.Component{
             console.log(error);
         }); 
     }
+    editMessage(message){
 
+        // update back-end data
+        fetch(`${process.env.API_URL}/msgs`+message.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify(message)
+        })
+        .then(response=> {
+            if(response.status == 200) {
+                return response;
+            }
+
+        })
+        .then(result=>result.json() )
+        .then(result=> {
+            console.log(result)
+        })
+        
+        .catch(error=> {
+            console.log(error);
+        })
+    }
+    }
 
     addMessage(message) {
         const basicString = this.state.userCredentials.email + ':'

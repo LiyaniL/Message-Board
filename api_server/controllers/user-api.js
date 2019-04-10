@@ -35,7 +35,7 @@ const registerNewUser = (req, res) => {
 }
 
 const loginUser = (req, res) => {
-    res.status(200).json({"api-msg": "Succesfully Authenticated"});
+    res.status(200).json(req.user);
 }
 
 passport.use(new BasicStrategy(

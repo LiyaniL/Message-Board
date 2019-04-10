@@ -16,8 +16,8 @@ const getAllMessagesOrderedByLastPosted = (req, res) => {
 };
 const getSingleMessage = (req, res) => {
   if (req.params && req.params.messageid) {
-    console.log(req.params);
-    console.log(req.params && req.params.messageid);
+  //  console.log(req.params);
+  //  console.log(req.params && req.params.messageid);
     messageModel.findById(req.params.messageid).exec((err, message) => {
       // error in executing function
       if (err) {
@@ -45,31 +45,31 @@ const getSingleMessage = (req, res) => {
 };
 
 const deleteSingleMessage = (req, res) => {
-  if ((req.params && req.params.messageid)) {
+  if (req.params && req.params.messageid) {
     messageModel.findById(req.params.messageid).exec((err, message) => {
-        // error in executing function
-        if (err) {
-          res.status(400).json(err);
-          return;
-        }
+      // error in executing function
+      if (err) {
+        res.status(400).json(err);
+        return;
+      }
 
-        // could execute, but didn't find message
-        if (!message) {
-          res.status(404).json({
-            "api-msg": "messageid not found"
-          });
-          return;
-        }
-
-        //found message, now deleting
-        message.remove(err => {
-          // error executing function
-          if (err) {
-            return res.status(400).json(err);
-          }
-          res.status(200).json(message);
+      // could execute, but didn't find message
+      if (!message) {
+        res.status(404).json({
+          "api-msg": "messageid not found"
         });
-      })
+        return;
+      }
+
+      //found message, now deleting
+      message.remove(err => {
+        // error executing function
+        if (err) {
+          return res.status(400).json(err);
+        }
+        res.status(200).json(message);
+      });
+    });
   } else {
     // must have a message id
     res.status(400).json({
@@ -79,65 +79,62 @@ const deleteSingleMessage = (req, res) => {
 };
 
 const deleteAllMessages = (req, res) => {
-    messageModel.find().exec((err, message) => {
-        // error in executing function
+  messageModel.find().exec((err, message) => {
+    // error in executing function
+    if (err) {
+      res.status(400).json(err);
+      return;
+    }
+
+    // could execute, but didn't find message
+    if (!message || message.length == 0) {
+      res.status(404).json({
+        "api-msg": "messageid not found"
+      });
+      return;
+    }
+
+    //found message, now deleting
+    message.forEach(element => {
+      element.remove(err => {
+        // error executing function
         if (err) {
-          res.status(400).json(err);
-          return;
+          return res.status(400).json(err);
         }
-
-        // could execute, but didn't find message
-        if (!message || (message.length == 0)) {
-          res.status(404).json({
-            "api-msg": "messageid not found"
-          });
-          return;
-        }
-
-        //found message, now deleting
-        message.forEach(element => {
-          element.remove(err => {
-            // error executing function
-            if (err) {
-              return res.status(400).json(err);
-            }
-          });
-          
-        });
-        res.status(200).json(message); //.json({"api-msg" : "Delete correct"});
-
-      })
-  };
-
+      });
+    });
+    res.status(200).json(message); //.json({"api-msg" : "Delete correct"});
+  });
+};
 
 const updateSingleMessage = (req, res) => {
-  if ((req.params && req.params.messageid)) {
+  if (req.params && req.params.messageid) {
     messageModel.findById(req.params.messageid).exec((err, message) => {
-        // error in executing function
+      // error in executing function
+      if (err) {
+        res.status(400).json(err);
+        return;
+      }
+
+      // could execute, but didn't find message
+      if (!message) {
+        res.status(404).json({
+          "api-msg": "messageid not found"
+        });
+        return;
+      }
+
+      //found message, now updating
+      //console.log(req.body.msg);
+      message.updateOne({ msg: req.body.msg }, err => {
+        // error executing function
         if (err) {
-          res.status(400).json(err);
-          return;
+          return res.status(400).json(err);
         }
-
-        // could execute, but didn't find message
-        if (!message) {
-          res.status(404).json({
-            "api-msg": "messageid not found"
-          });
-          return;
-        }
-
-        //found message, now updating
-        //console.log(req.body.msg);
-        message.updateOne({msg: req.body.msg}, (err => {
-          // error executing function
-          if (err) {
-            return res.status(400).json(err);
-          }
-          res.status(200).json(message);
-          console.log(req.body.msg);
-        }));
-      })
+        res.status(200).json(message);
+        console.log(req.body.msg);
+      });
+    });
   } else {
     // must have a message id
     res.status(400).json({
