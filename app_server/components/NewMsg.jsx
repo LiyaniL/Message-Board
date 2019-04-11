@@ -12,22 +12,22 @@ class NewMsg extends React.Component {
   }
 
   handleText(event) {
-    if (event.target.id === "name") {
-      this.setState({
-        name: event.target.value
-      });
-    } else {
+    // if (event.target.id === "name") {
+    //   this.setState({
+    //     name: event.target.value
+    //   });
+    // } else {
       this.setState({
         msg: event.target.value
       });
     }
-  }
+
 
   addMessage(event) {
     event.preventDefault();
 
     //save state vars to local
-    let name = this.state.name;
+    let name = this.props.currentuser.username;
     let msg = this.state.msg;
 
     // make sure neither field is empty
@@ -48,24 +48,11 @@ class NewMsg extends React.Component {
       <form onSubmit={this.addMessage}>
         <div className="form-group">
           <div className="row">
-            <label htmlFor="name" className="col-3 col-form-label">
-              Enter Name:
-            </label>
             <label htmlFor="msg" className="col-7 col-form-label">
               Enter Message:
             </label>
           </div>
           <div className="row">
-            <div className="col-3">
-              <input
-                id="name"
-                type="text"
-                className="form-control"
-                placeholder="Your Name"
-                value={this.state.name}
-                onChange={this.handleText}
-              />
-            </div>
             <div className="col-7">
               <input
                 id="msg"

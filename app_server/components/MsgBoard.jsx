@@ -23,8 +23,9 @@ class MsgBoard extends React.Component{
                     email: '',
                     password: ''
                 },
-                currentuser: ""
-
+                currentuser: "",
+                loggedInUserId: "",
+                loggedInUserName: ""
             };
     }
 
@@ -73,7 +74,9 @@ class MsgBoard extends React.Component{
         .then(result=> result.json())
         .then(result=> {
             this.setState({
-                currentuser: result
+                currentuser: result,
+                loggedInUserId: result._id,
+                loggedInUserName: result.username
             })
         })
         .catch(error => {
@@ -135,13 +138,15 @@ class MsgBoard extends React.Component{
         .then(result=>result.json() )
         .then(result=> {
             console.log(result)
+
+            
         })
         
         .catch(error=> {
             console.log(error);
-        })
+        });
     }
-    }
+    
 
     addMessage(message) {
         const basicString = this.state.userCredentials.email + ':'
@@ -171,7 +176,7 @@ class MsgBoard extends React.Component{
         .then(response=> this.handleHTTPErrors(response))
         .catch(error=> {
             console.log(error);
-        })
+        });
     }
 
     componentDidMount() {
@@ -215,13 +220,13 @@ class MsgBoard extends React.Component{
                 loginAttempts={this.state.loginAttempts}/>
             }
             else {
-                form = <NewMsg addMessageCallback={this.addMessage}/>
+                form = <NewMsg addMessageCallback={this.addMessage} currentuser={this.state.currentuser} />
             }
             
             return (
                 <div>
                     {form}
-                    <MsgList messages={this.state.messages}/>
+                    <MsgList currentuser={this.state.currentuser} messages={this.state.messages}/>
                 </div>
             );
         }
