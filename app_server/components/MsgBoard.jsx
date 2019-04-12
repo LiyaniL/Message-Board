@@ -4,12 +4,17 @@ const NewMsg = require('./NewMsg.jsx');
 const Login = require('./Login.jsx');
 const Registration = require("../../client_side/Registration.jsx");
 
+const adminid = "5cb104a70c69711574708796";
+
 class MsgBoard extends React.Component{
     constructor(props) {
         super(props);
         this.addMessage = this.addMessage.bind(this);
         this.register = this.register.bind(this);
         this.addNewUser = this.addNewUser.bind(this);
+        this.deleteSingleMessage = this.deleteSingleMessage.bind(this);
+        this.deleteAllMessages = this.deleteAllMessages.bind(this);
+        this.editMessage = this.editMessage.bind(this);
         this.login = this.login.bind(this);
             this.state = {
                 messages: this.props.messages,
@@ -119,13 +124,14 @@ class MsgBoard extends React.Component{
         }); 
     }
     editMessage(message){
-
+        const basicString = this.state.userCredentials.email + ':' + this.state.userCredentials.password;
+        console.log(JSON.stringify(message));
         // update back-end data
-        fetch(`${process.env.API_URL}/msgs`+message.id, {
+        fetch(`${process.env.API_URL}/msgs/`+message._id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                
+                'Authorization': 'Basic ' + btoa(basicString)
             },
             body: JSON.stringify(message)
         })
@@ -151,18 +157,6 @@ class MsgBoard extends React.Component{
     addMessage(message) {
         const basicString = this.state.userCredentials.email + ':'
         + this.state.userCredentials.password;
-        let msgs = this.state.messages;
-
-        // add id attribute
-        message.id = msgs.length;
-
-        // append to array
-        msgs.push(message);
-
-        //update state var
-        this.setState({
-            messages: msgs
-        });
 
         // update back-end data
         fetch(`${process.env.API_URL}/msgs`, {
@@ -174,10 +168,83 @@ class MsgBoard extends React.Component{
             body: JSON.stringify(message)
         })
         .then(response=> this.handleHTTPErrors(response))
+        .then(result => result.json() )
+        .then(result => {
+        let msgs = this.state.messages;
+        // append to array
+        msgs.push(result);
+
+        //update state var
+        this.setState({
+            messages: msgs
+        })
+        })
         .catch(error=> {
             console.log(error);
         });
+
     }
+
+    deleteAllMessages(message) {
+        fetch(`${process.env.API_URL}/msgs`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+        })
+        .then(response=> {
+            if(response.status == 200) {
+                return response;
+            }
+
+        })
+        .then(result=>result.json() )
+        .then(result=> {
+        var newMsgArray = Object.assign(this.state.messages);
+        newMsgArray.splice(0);
+        this.setState({
+            messages: newMsgArray
+        }); 
+        })
+        
+        .catch(error=> {
+            console.log(error);
+        });
+      }
+    
+
+    deleteSingleMessage(message) {
+        // update back-end data
+        fetch(`${process.env.API_URL}/msgs/`+message._id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify(message)
+        })
+        .then(response=> {
+            if(response.status == 200) {
+                return response;
+            }
+
+        })
+        .then(result=>result.json() )
+        .then(result=> {
+        console.log(result + "this should be the single message that we want to delete");
+        var newMsgArray = Object.assign(this.state.messages);
+        var filtered = newMsgArray.filter( message => message._id != result._id);
+        console.log(filtered);
+        this.setState({
+            messages: filtered
+        }); 
+        })
+        
+        .catch(error=> {
+            console.log(error);
+        });
+      }
 
     componentDidMount() {
         fetch(`${process.env.API_URL}/msgs`)
@@ -197,6 +264,10 @@ class MsgBoard extends React.Component{
 
     render() {
         let form;
+        let deleteAll;
+        if (this.state.loggedInUserId == adminid) {
+            deleteAll = <button className="btn btn-danger mb-2" onClick={this.deleteAllMessages}>Delete All</button>
+        }
         if (this.state.registrationForm) {
             let failedRegistration;
 
@@ -226,7 +297,8 @@ class MsgBoard extends React.Component{
             return (
                 <div>
                     {form}
-                    <MsgList currentuser={this.state.currentuser} messages={this.state.messages}/>
+                    {deleteAll}
+                    <MsgList currentuser={this.state.currentuser} messages={this.state.messages} deleteSingleMsgCallback={this.deleteSingleMessage} editSingleMsgCallback={this.editMessage}/>
                 </div>
             );
         }
