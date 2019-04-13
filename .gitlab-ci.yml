@@ -26,7 +26,7 @@ variables:
   # replace $GITLAB_USER_EMAIL with your D2L one if so desired
   LE_EMAIL: liyanilustado10@gmail.com
   # change to false after deploying cert
-  CERT: "false"
+  CERT: "true"
 
 before_script:
   # --- SSH Settings to communicate with Dokku: DON'T MESS WITH THIS! ---
