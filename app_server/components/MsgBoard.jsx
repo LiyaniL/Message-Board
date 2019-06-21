@@ -15,7 +15,6 @@ class MsgBoard extends React.Component{
         this.deleteSingleMessage = this.deleteSingleMessage.bind(this);
         this.deleteAllMessages = this.deleteAllMessages.bind(this);
         this.editMessage = this.editMessage.bind(this);
-        this.logout = this.logout.bind(this);
         this.login = this.login.bind(this);
             this.state = {
                 messages: this.props.messages,
@@ -39,10 +38,6 @@ class MsgBoard extends React.Component{
         if(!response.ok) throw Error(response.status + 
         ': ' + response.statusText);
         return response;
-    }
-
-    logout() {
-        
     }
 
     login(userCredentials) {
@@ -270,8 +265,6 @@ class MsgBoard extends React.Component{
     render() {
         let form;
         let deleteAll;
-        let logout;
-        logout = <button className="btn btn-primary mb-2" onClick={this.logout}>Logout</button>
         if (this.state.loggedInUserId == adminid) {
             deleteAll = <button className="btn btn-danger mb-2" onClick={this.deleteAllMessages}>Delete All</button>
         }
